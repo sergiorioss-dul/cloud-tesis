@@ -1,10 +1,18 @@
 const Sequelize = require('sequelize');
 require('dotenv').config();
+var pg = require('pg');
+pg.defaults.ssl = true;
 
 module.exports = new Sequelize(process.env.BD_NOMBRE,process.env.BD_USER,process.env.BD_PASS,{
     host: process.env.BD_HOST,
     port: process.env.BD_PORT,
     dialect: 'postgres',
+    dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false // <<<<<<< YOU NEED THIS
+        }
+      },
     pool: {
         max:5,
         min:0,
@@ -14,5 +22,6 @@ module.exports = new Sequelize(process.env.BD_NOMBRE,process.env.BD_USER,process
     define:{
         timestamps:false
     },
-    logging:false
+    logging:false,
+    ssl: true
 });
